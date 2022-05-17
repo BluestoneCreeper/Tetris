@@ -223,7 +223,7 @@ public class Tetris extends JFrame implements Runnable {
                     RenderingHints.VALUE_ANTIALIAS_ON);
         }
 //fill background
-        g.setColor(Color.cyan);
+        g.setColor(Color.black);
         g.fillRect(0, 0, xsize+INFO, ysize);
 
         int x[] = {getX(0), getX(getWidth2()), getX(getWidth2()), getX(0), getX(0)};
@@ -602,7 +602,7 @@ public class Tetris extends JFrame implements Runnable {
     }
     public void s2(){
         if (!nextshape) {
-            curshapecolor = new Color(250,0,180);
+            curshapecolor = Color.cyan;
             SX[0] = 3;
             SX[2] = 4;
             SX[1] = 5;
@@ -623,7 +623,7 @@ public class Tetris extends JFrame implements Runnable {
             NSY[2] = 0;
             NSY[1] = 0;
             NSY[3] = 0;
-            prevshapecolor = new Color(250,0,180);
+            prevshapecolor = Color.cyan;
         }
     }
     public void s3(){
