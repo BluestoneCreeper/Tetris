@@ -260,7 +260,7 @@ public class Tetris extends JFrame implements Runnable {
         g.drawString("HighScore: " + highScore, (int)((getWidth2()+INFO/2)/xs), getHeight2()/2+(int)(xy*10));
         g.scale(1/xs,1/xy);
         
-        g.setColor(Color.red);
+        g.setColor(Color.black);
 //horizontal lines
         for (int zi=1;zi<numRows;zi++)
         {
@@ -294,10 +294,10 @@ public class Tetris extends JFrame implements Runnable {
                 for (int i = 0; i < SX.length; i++)
                 {
                     g.setColor(curshapecolor);
-                    g.fillRect(getX(0)+SX[i]*getWidth2()/numColumns,
-                    getY(0)+SY[i]*getHeight2()/numRows,
-                    getWidth2()/numColumns,
-                    getHeight2()/numRows); 
+                    g.fillRect(getX(1)+SX[i]*getWidth2()/numColumns,
+                    getY(2)+SY[i]*getHeight2()/numRows-1,
+                    getWidth2()/numColumns-1,
+                    getHeight2()/numRows-1); 
                 }
                 if (board[zrow][zcolumn] == DOWN)
                 {
@@ -309,10 +309,10 @@ public class Tetris extends JFrame implements Runnable {
                 }
                 g.setColor(prevshapecolor);
                 for (int i = 0; i < NSX.length;i++) {
-                    g.fillRect(getX(getWidth2() + INFO / 10 + NSX[i] * getWidth2() / numColumns),
-                    getY((0) + NSY[i] * getHeight2() / numRows),
-                    getWidth2() / numColumns,
-                    getHeight2() / numRows);
+                    g.fillRect(getX(getWidth2() + INFO / 10 + NSX[i] * getWidth2() / numColumns+1),
+                    getY((1) + NSY[i] * getHeight2() / numRows),
+                    getWidth2() / numColumns-1,
+                    getHeight2() / numRows-1);
                 }
             }
         }
