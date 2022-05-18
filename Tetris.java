@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Tetris extends JFrame implements Runnable {
-    
+
     static final int numRows = 20;
     static final int numColumns = 10;
     static final int XBORDER = 40;
@@ -16,7 +16,7 @@ public class Tetris extends JFrame implements Runnable {
     //// day 1 ^^^
     static final int WINDOW_HEIGHT = YTITLE + WINDOW_BORDER + 2 * YBORDER + numRows*30;
     static final int INFO = (int)(WINDOW_WIDTH*.3787878787878);
-    
+
     boolean animateFirstTime = true;
     int xsize = -1;
     int ysize = -1;
@@ -25,7 +25,7 @@ public class Tetris extends JFrame implements Runnable {
 
     final int EMPTY = 0;
     int board[][];
-    
+
     // shape positions
     int[] SX = new int[4];
     int[] SY = new int[4];
@@ -42,7 +42,7 @@ public class Tetris extends JFrame implements Runnable {
     //end
     boolean end = true;
     boolean nextshape = false;
-    
+
     //time
     int Time = 0;
 
@@ -86,19 +86,19 @@ public class Tetris extends JFrame implements Runnable {
             }
         });
 
-    addMouseMotionListener(new MouseMotionAdapter() {
-      public void mouseDragged(MouseEvent e) {
-        repaint();
-        //d1 5/7
-      }
-    });
+        addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                repaint();
+                //d1 5/7
+            }
+        });
 
-    addMouseMotionListener(new MouseMotionAdapter() {
-      public void mouseMoved(MouseEvent e) {
+        addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseMoved(MouseEvent e) {
 
-        repaint();
-      }
-    });
+                repaint();
+            }
+        });
 
         addKeyListener(new KeyAdapter() {
 
@@ -132,7 +132,7 @@ public class Tetris extends JFrame implements Runnable {
         start();
     }
     Thread relaxer;
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void CCW()
     {
         boolean DR = false;
@@ -147,7 +147,7 @@ public class Tetris extends JFrame implements Runnable {
             yy = RY-(SX[i]-RX);
             xx = RX+(saves[i]-RY);
             try
-                {
+            {
                 if (yy < 0 || yy > numRows || xx < 0 || xx > numColumns || board[yy][xx] == DOWN)
                 {
                     DR = true;
@@ -167,7 +167,7 @@ public class Tetris extends JFrame implements Runnable {
             }
         }
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void CW()
     {
         boolean DR = false;
@@ -182,7 +182,7 @@ public class Tetris extends JFrame implements Runnable {
             yy = RY+(SX[i]-RX);
             xx = RX-(saves[i]-RY);
             try
-                {
+            {
                 if (yy < 0 || yy > numRows || xx < 0 || xx > numColumns || board[yy][xx] == DOWN)
                 {
                     DR = true;
@@ -201,17 +201,17 @@ public class Tetris extends JFrame implements Runnable {
             }
         }
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void init() {
         requestFocus();
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void destroy() {
     }
 
- 
 
-////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////
     public void paint(Graphics gOld) {
         if (image == null || xsize != getSize().width || ysize != getSize().height) {
             xsize = getSize().width;
@@ -259,33 +259,33 @@ public class Tetris extends JFrame implements Runnable {
         g.drawString("Score: " + score, (int)((getWidth2()+INFO/2)/xs), getHeight2()/2);
         g.drawString("HighScore: " + highScore, (int)((getWidth2()+INFO/2)/xs), getHeight2()/2+(int)(xy*10));
         g.scale(1/xs,1/xy);
-        
-        g.setColor(Color.black);
+
+        g.setColor(new Color(200,200,200));
 //horizontal lines
         for (int zi=1;zi<numRows;zi++)
         {
             g.drawLine(getX(0) ,getY(0)+zi*getHeight2()/numRows ,
-            getX(getWidth2()) ,getY(0)+zi*getHeight2()/numRows );
+                    getX(getWidth2()) ,getY(0)+zi*getHeight2()/numRows );
         }
         //
         for (int zi=1;zi<4;zi++)
         {
             g.drawLine(getX(getWidth2()+INFO/10) ,getY(0)+zi*getHeight2()/numRows ,
-            getX(getWidth2()+INFO/10+4*getWidth2()/numColumns) ,getY(0)+zi*getHeight2()/numRows );
+                    getX(getWidth2()+INFO/10+4*getWidth2()/numColumns) ,getY(0)+zi*getHeight2()/numRows );
         }
 //vertical lines
         for (int zi=1;zi<numColumns;zi++)
         {
             g.drawLine(getX(0)+zi*getWidth2()/numColumns ,getY(0) ,
-            getX(0)+zi*getWidth2()/numColumns,getY(getHeight2())  );
+                    getX(0)+zi*getWidth2()/numColumns,getY(getHeight2())  );
         }
         //
         for (int zi=1;zi<4;zi++)
         {
             g.drawLine(getX(getWidth2()+INFO/10)+zi*getWidth2()/numColumns ,getY(0) ,
-            getX(getWidth2()+INFO/10)+zi*getWidth2()/numColumns,getY((0)+4*getHeight2()/numRows)  );
+                    getX(getWidth2()+INFO/10)+zi*getWidth2()/numColumns,getY((0)+4*getHeight2()/numRows)  );
         }
-        
+
 //Display the objects of the board
         for (int zrow=0;zrow<numRows;zrow++)
         {
@@ -293,37 +293,54 @@ public class Tetris extends JFrame implements Runnable {
             {
                 for (int i = 0; i < SX.length; i++)
                 {
+
+                    g.setColor(Color.black);
+                    g.fillRect(getX(0)+SX[i]*getWidth2()/numColumns,
+                            getY(0)+SY[i]*getHeight2()/numRows,
+                            getWidth2()/numColumns+1,
+                            getHeight2()/numRows+1);
                     g.setColor(curshapecolor);
                     g.fillRect(getX(1)+SX[i]*getWidth2()/numColumns,
-                    getY(2)+SY[i]*getHeight2()/numRows-1,
-                    getWidth2()/numColumns-1,
-                    getHeight2()/numRows-1); 
+                            getY(2)+SY[i]*getHeight2()/numRows-1,
+                            getWidth2()/numColumns-1,
+                            getHeight2()/numRows-1);
                 }
                 if (board[zrow][zcolumn] == DOWN)
                 {
-                    g.setColor(DCOLOR[zrow][zcolumn]);
+                    g.setColor(Color.black);
                     g.fillRect(getX(0)+zcolumn*getWidth2()/numColumns,
-                    getY(0)+zrow*getHeight2()/numRows,
-                    getWidth2()/numColumns,
-                    getHeight2()/numRows);
+                            getY(0)+zrow*getHeight2()/numRows,
+                            getWidth2()/numColumns+1,
+                            getHeight2()/numRows+1);
+                    g.setColor(DCOLOR[zrow][zcolumn]);
+                    g.fillRect(getX(1)+zcolumn*getWidth2()/numColumns,
+                            getY(2)+zrow*getHeight2()/numRows-1,
+                            getWidth2()/numColumns-1,
+                            getHeight2()/numRows-1);
                 }
-                g.setColor(prevshapecolor);
+
                 for (int i = 0; i < NSX.length;i++) {
+                    g.setColor(Color.black);
+                    g.fillRect(getX(getWidth2() + INFO / 10 + NSX[i] * getWidth2() / numColumns),
+                            getY((0) + NSY[i] * getHeight2() / numRows),
+                            getWidth2() / numColumns+1,
+                            getHeight2() / numRows+1);
+                    g.setColor(prevshapecolor);
                     g.fillRect(getX(getWidth2() + INFO / 10 + NSX[i] * getWidth2() / numColumns+1),
-                    getY((1) + NSY[i] * getHeight2() / numRows),
-                    getWidth2() / numColumns-1,
-                    getHeight2() / numRows-1);
+                            getY((1) + NSY[i] * getHeight2() / numRows),
+                            getWidth2() / numColumns-1,
+                            getHeight2() / numRows-1);
                 }
             }
         }
-        
+
         if (end)
         {
             g.setColor(Color.black);
             g.fillRect(0,
-            0,
-            xsize+INFO,
-            ysize); 
+                    0,
+                    xsize+INFO,
+                    ysize);
             g.setColor(Color.red);
             g.drawString("END!", (getWidth2()+INFO)/2, getHeight2()/2);
             g.drawString("Score: " + score, (getWidth2()+INFO)/2, getHeight2()/2 - 20);
@@ -337,14 +354,14 @@ public class Tetris extends JFrame implements Runnable {
         gOld.drawImage(image, 0, 0, null);
     }
 
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 // needed for     implement runnable
     public void run() {
         while (true) {
             animate();
             repaint();
-            
-            
+
+
             double seconds = 1/FPS;    //time that 1 frame takes.
             int miliseconds = (int) (1000.0 * seconds);
             try {
@@ -353,7 +370,7 @@ public class Tetris extends JFrame implements Runnable {
             }
         }
     }
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
     public void reset() {
 
         nextshape = false;
@@ -369,15 +386,15 @@ public class Tetris extends JFrame implements Runnable {
         }
 
         end = false;
-        
+
         newshape();
-        
+
         //board[8][1] = DOWN;
-        
+
         Time = 0;
 
     }
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
     public void animate() {
         if (animateFirstTime) {
             animateFirstTime = false;
@@ -392,7 +409,7 @@ public class Tetris extends JFrame implements Runnable {
 
         //make shape move
         move();
-        
+
         int CC = 0;
         boolean fall = false;
         for (int zrow=0;zrow<numRows;zrow++)
@@ -440,13 +457,13 @@ public class Tetris extends JFrame implements Runnable {
                 }
             }
         }
-        
+
         //incrament time
         xdir = 0;
         Time++;
     }
 
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void move() {
         boolean DR = false;
         for (int i = 0; i < SY.length; i++) {
@@ -471,10 +488,10 @@ public class Tetris extends JFrame implements Runnable {
             moveDown();
         }
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void moveDown() {
         for (int i = 0; i < SY.length; i++) {
-        //every 1 second, check if moving down will result in a collision
+            //every 1 second, check if moving down will result in a collision
 
             try {
                 if (board[SY[i] + 1+DS][SX[i]] == DOWN) {
@@ -500,7 +517,7 @@ public class Tetris extends JFrame implements Runnable {
         }
         fell++;
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void solid(){
         fell=0;
         //make the shape solid
@@ -513,7 +530,7 @@ public class Tetris extends JFrame implements Runnable {
         }
         newshape();
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void  newshape() {
         shape = nextShape;
         nextShape = (int)(Math.random()*7)+1;
@@ -570,7 +587,7 @@ public class Tetris extends JFrame implements Runnable {
         }
         nextshape = false;
     }
-/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
     public void s1(){ //make into new method
 
 
@@ -761,14 +778,14 @@ public class Tetris extends JFrame implements Runnable {
             prevshapecolor = Color.yellow;
         }
     }
-/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
     public void start() {
         if (relaxer == null) {
             relaxer = new Thread(this);
             relaxer.start();
         }
     }
-////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
     public void stop() {
         if (relaxer.isAlive()) {
             relaxer.stop();
@@ -777,7 +794,7 @@ public class Tetris extends JFrame implements Runnable {
     }
 
 
-/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////
     public int getX(int x) {
         return (x + XBORDER + WINDOW_BORDER);
     }
@@ -789,7 +806,7 @@ public class Tetris extends JFrame implements Runnable {
     public int getYNormal(int y) {
         return (-y + YBORDER + YTITLE + getHeight2());
     }
-    
+
     public int getWidth2() {
         return (xsize - 2 * (XBORDER + WINDOW_BORDER));
     }
@@ -798,3 +815,4 @@ public class Tetris extends JFrame implements Runnable {
         return (ysize - 2 * YBORDER - WINDOW_BORDER - YTITLE);
     }
 }
+
